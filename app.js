@@ -10,6 +10,10 @@ const router = require("./routes/index");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get('/', (req, res) => {
+    res.send('Hallo gaiss')
+})
+
 app.use("/api/v1", router);
 
 app.listen(PORT, () => console.log("Server running on port", PORT));

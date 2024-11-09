@@ -30,7 +30,7 @@ class ImageController {
                             judul: file.originalname,
                             deskripsi: req.body.deskripsi || null,
                             urlGambar: uploadFile.url,
-                            fileId: uploadedFileId, // Simpan fileId di sini
+                            fileId: uploadedFileId, 
                         },
                     });
 
@@ -67,7 +67,7 @@ class ImageController {
     }
 
     static async getAllGambar(req, res) {
-        const { page = 1, limit = 10 } = req.params;
+        const { page = 1, limit = 10 } = req.query;
         const skip = (page - 1) * limit;
 
         try {
@@ -93,7 +93,7 @@ class ImageController {
     }
 
     static async getDetailGambar(req, res) {
-        const { id } = req.params;
+        const { id } = req.query;
         try {
             const file = await prisma.gambar.findUnique({
                 where: { id: parseInt(id, 10) },
@@ -123,7 +123,7 @@ class ImageController {
     }
 
     static async deleteGambar(req, res) {
-        const { id } = req.params;
+        const { id } = req.query;
         try {
             const file = await prisma.gambar.findUnique({
                 where: { id: parseInt(id, 10) },
@@ -158,7 +158,7 @@ class ImageController {
     }
 
     static async updateDetailsGambar(req, res) {
-        const { id, judul, deskripsi } = req.params;
+        const { id, judul, deskripsi } = req.query;
         try {
             const file = await prisma.gambar.update({
                 where: { id: parseInt(id , 10) },
