@@ -1,12 +1,15 @@
-require('dotenv').config();
-const express = require('express');
-const app = express();
-const router = require('./routes/index');
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
 
-app.use(express.json()); 
+const PORT = process.env.PORT || 3000;
+const express = require("express");
+const app = express();
+const router = require("./routes/index");
+
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api/v1', router);
+app.use("/api/v1", router);
 
-const { PORT = 3000} = process.env;
-app.listen(PORT, () => console.log('Server running on port', PORT));
+app.listen(PORT, () => console.log("Server running on port", PORT));
