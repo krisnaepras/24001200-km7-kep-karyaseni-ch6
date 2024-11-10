@@ -42,11 +42,8 @@ jobs:
                   REMOTE_USER: ${{ secrets.USERNAME }}
                   TARGET_DIR: ${{ secrets.TARGET_DIR }}
               run: |
-                  ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no "$REMOTE_USER@$REMOTE_HOST" << 'EOF'
+                  ssh -t -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no "$REMOTE_USER@$REMOTE_HOST" << 'EOF'
                   cd $TARGET_DIR
-                  if ! pm2 list | grep -q "app1"; then
-                      pm2 start
-                  else
-                      pm2 restart all
-                  fi
+                  pm2 list | grep -q "app1" && pm2 restart all || pm2 start
                   EOF
+
