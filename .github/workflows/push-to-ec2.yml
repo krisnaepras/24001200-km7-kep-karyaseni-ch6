@@ -29,5 +29,19 @@ jobs:
                   REMOTE_HOST: ${{ secrets.HOST_DNS }}
                   REMOTE_USER: ${{ secrets.USERNAME }}
                   TARGET: ${{ secrets.TARGET_DIR }}
-            - run: pm2 restart all
+    followup:
+       name: "Follow-up Tasks (PM2)"
+       runs-on: ubuntu-latest
+       steps:
+       - name: "Restart PM2 task"
+         uses: appleboy/ssh-action@v0.1.7
+         with:
+             host: ${{ env.REMOTE_HOST }}
+             username: ${{ env.REMOTE_USER }}
+             key: ${{ env.SSH_PRIVATE_KEY }}
+             script: "pm2 restart all"
+         env:
+             SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+             REMOTE_HOST: ${{ vars.HOST_DNS }}
+             REMOTE_USER: ${{ vars.USERNAME }}
 
