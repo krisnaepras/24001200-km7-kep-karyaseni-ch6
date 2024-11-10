@@ -30,20 +30,6 @@ jobs:
                   REMOTE_USER: ${{ secrets.USERNAME }}
                   TARGET: ${{ secrets.TARGET_DIR }}
 
-            - name: Configure SSH Key
-              run: |
-                  mkdir -p ~/.ssh
-                  echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
-                  chmod 600 ~/.ssh/id_rsa
-
             - name: Restart PM2
-              env:
-                  REMOTE_HOST: ${{ secrets.HOST_DNS }}
-                  REMOTE_USER: ${{ secrets.USERNAME }}
-                  TARGET_DIR: ${{ secrets.TARGET_DIR }}
-              run: |
-                  ssh -t -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no "$REMOTE_USER@$REMOTE_HOST" << 'EOF'
-                  cd $TARGET_DIR
-                  pm2 list | grep -q "app1" && pm2 restart all || pm2 start
-                  EOF
+              run: pm2 restart all
 
