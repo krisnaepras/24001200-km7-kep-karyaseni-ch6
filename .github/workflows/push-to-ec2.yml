@@ -44,5 +44,9 @@ jobs:
               run: |
                   ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no "$REMOTE_USER@$REMOTE_HOST" << 'EOF'
                   cd $TARGET_DIR
-                  pm2 restart all
+                  if ! pm2 list | grep -q "app1"; then
+                      pm2 start
+                  else
+                      pm2 restart all
+                  fi
                   EOF
