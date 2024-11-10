@@ -37,12 +37,8 @@ jobs:
        - name: "Restart PM2 task"
          uses: appleboy/ssh-action@v0.1.7
          with:
-             host: ${{ env.REMOTE_HOST }}
-             username: ${{ env.REMOTE_USER }}
-             key: ${{ env.SSH_PRIVATE_KEY }}
+             host: ${{ secrets.HOST_DNS }}
+             username: ${{ secrets.USERNAME }}
+             key: ${{ secrets.SSH_PRIVATE_KEY }}
              script: "source ~/.nvm/nvm.sh && pm2 restart all"
-         env:
-             SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-             REMOTE_HOST: ${{ vars.HOST_DNS }}
-             REMOTE_USER: ${{ vars.USERNAME }}
 
