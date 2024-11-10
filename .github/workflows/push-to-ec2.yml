@@ -35,8 +35,9 @@ jobs:
                   SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
                   REMOTE_HOST: ${{ secrets.HOST_DNS }}
                   REMOTE_USER: ${{ secrets.USERNAME }}
+                  TARGET_DIR: ${{ secrets.TARGET_DIR }}
               run: |
-                  ssh -i "$SSH_PRIVATE_KEY" -o StrictHostKeyChecking=no "$REMOTE_USER@$REMOTE_HOST" << 'EOF'
-                  cd ${{ secrets.TARGET_DIR }}
+                  ssh -i "$SSH_PRIVATE_KEY" -o StrictHostKeyChecking=no "$REMOTE_USER@$REMOTE_HOST" << EOF
+                  cd "$TARGET_DIR"
                   pm2 restart all
                   EOF
