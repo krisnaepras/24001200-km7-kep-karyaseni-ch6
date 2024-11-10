@@ -22,6 +22,11 @@ jobs:
             - name: Install Dependencies
               run: npm install
 
+            - name: Set up SSH key
+              run: |
+                echo "$SSH_PRIVATE_KEY" > private_key
+                chmod 600 private_key
+            
             - name: Deploy to Server 1
               uses: easingthemes/ssh-deploy@main
               env:
@@ -29,15 +34,10 @@ jobs:
                   REMOTE_HOST: ${{ secrets.HOST_DNS }}
                   REMOTE_USER: ${{ secrets.USERNAME }}
                   TARGET: ${{ secrets.TARGET_DIR }}
-
+            
             - name: Restart PM2
-              env:
-                  SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-                  REMOTE_HOST: ${{ secrets.HOST_DNS }}
-                  REMOTE_USER: ${{ secrets.USERNAME }}
-                  TARGET_DIR: ${{ secrets.TARGET_DIR }}
               run: |
-                  ssh -i "$SSH_PRIVATE_KEY" -o StrictHostKeyChecking=no "$REMOTE_USER@$REMOTE_HOST" << EOF
-                  cd "$TARGET_DIR"
-                  pm2 restart all
-                  EOF
+                ssh -i private_key -o StrictHostKeyChecking=no "$REMOTE_USER@$REMOTE_HOST" << EOF
+                cd "$TARGET_DIR"
+                pm2 restart all
+                EOF
