@@ -31,5 +31,5 @@ jobs:
                   TARGET: ${{ secrets.TARGET_DIR }}
               with:
                   script: |
-                      pm2 reload all
+                      pm2 restart all
 
