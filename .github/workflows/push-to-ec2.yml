@@ -38,7 +38,7 @@ jobs:
          with:
              host: ${{ env.REMOTE_HOST }}
              username: ${{ env.REMOTE_USER }}
-             key: ${{ env.SSH_PRIVATE_KEY }}
+             key: ${{ env.EC2_SSH_KEY }}
              script: "pm2 restart all"
          env:
              SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
