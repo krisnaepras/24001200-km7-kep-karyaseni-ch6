@@ -1,6 +1,5 @@
 name: Push-to-EC2
 
-# Trigger deployment only on push to main branch
 on:
     push:
         branches:
@@ -30,5 +29,14 @@ jobs:
                   REMOTE_HOST: ${{ secrets.HOST_DNS }}
                   REMOTE_USER: ${{ secrets.USERNAME }}
                   TARGET: ${{ secrets.TARGET_DIR }}
+
             - name: Restart PM2
-              run: pm2 restart app1
+              env:
+                  SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+                  REMOTE_HOST: ${{ secrets.HOST_DNS }}
+                  REMOTE_USER: ${{ secrets.USERNAME }}
+              run: |
+                  ssh -i "$SSH_PRIVATE_KEY" -o StrictHostKeyChecking=no "$REMOTE_USER@$REMOTE_HOST" << 'EOF'
+                  cd ${{ secrets.TARGET_DIR }}
+                  pm2 restart all
+                  EOF
