@@ -30,3 +30,5 @@ jobs:
                   REMOTE_HOST: ${{ secrets.HOST_DNS }}
                   REMOTE_USER: ${{ secrets.USERNAME }}
                   TARGET: ${{ secrets.TARGET_DIR }}
+            - name: Restart PM2
+              run: sudo pm2 restart app1
