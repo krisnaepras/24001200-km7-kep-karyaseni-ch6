@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-    res.send('<h1>Halo gaiss :D</h1>')
+    res.send('<h1>Halo Gaiss Welkom :D</h1>')
 })
 
 app.use("/api/v1", router);
